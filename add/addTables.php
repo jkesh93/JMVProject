@@ -188,13 +188,13 @@ function fixShorthand($input)
 
     	if (@$_SESSION['loggedIn'] == true) { // login confirmation
 
-    		echo '<form method=\'post\' action="form.php">';
+    		echo '<form method=\'get\' action="form.php">';
     		echo '<br>Which table would you like to add to? <br>';
     		echo "<select name='formtype' id='chooseForm' onchange='myFunction(this.value)'>";
     		for($i=0; $i < count($tableNameArray); $i++){
 
     		
-    		echo '<br> <option value=' . $tableNameArray[$i] . '>' . $tableNiceNameArray[$i];
+    		echo '<br> <option name=\'formtype\' value=' . $tableNameArray[$i] . '>' . $tableNiceNameArray[$i];
 
    			}
    			echo "</select>";

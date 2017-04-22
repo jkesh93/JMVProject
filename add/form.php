@@ -12,11 +12,13 @@ if (@$_SESSION['loggedIn'] != true) {
 }
 
 // Variables
-$form = $_POST['formtype'];
+$form = $_GET['formtype'];
 $formNice = fixShorthand($form);
+$entriesReady;
 
 
 // Functions
+
 
 function getColumnSize($tableName){
 	global $conn2;
@@ -78,16 +80,22 @@ function determineInputType($input){
 		if($input == $dates[$i]){
 			$output = 'date';
 			return $output;
-		} 
+		} else {
+			$output = 'text';
+			return $output;
+		}
 	}	
 }
 
 function placeHolderHelper($input){
 
+	$output = '';
+
 	$ssnCases = array(
 		'ssn',
 		'Patrons ssn',
-		)
+		'driver_ssn'
+		);
 
 	for($i = 0; $i < count($ssnCases); $i++){
 		if($input == $ssnCases[$i]){
@@ -98,7 +106,7 @@ function placeHolderHelper($input){
 
 	$vinCases = array(
 		'vin',
-		)
+		);
 
 	for($i = 0; $i < count($vinCases); $i++){
 		if($input == $vinCases[$i]){
@@ -143,17 +151,19 @@ function fixShorthand($input)
         'REPAIRED_AT',
         'vehicleowned',
         'driver',
-        'vehicle'
+        'vehicle',
+        'insurance',
+        'mechanics'
     );
     $solution  = array(
         'First Name',
         'Middle Initial',
         'Last Name',
         'Name',
-        'HORSEPOWER',
-        'DISPLACEMENT',
-        'PISTONS',
-        'EXPIRES',
+        'Horsepower',
+        'Displacement',
+        'Pistons',
+        'Expires',
         'Make',
         'Model',
         'Color',
@@ -174,7 +184,9 @@ function fixShorthand($input)
         'Repaired At',
         'Vehicle Ownership',
         'Driver',
-        'Vehicle'
+        'Vehicle',
+        'Insurance',
+        'Mechanics'
     );
 
 
@@ -186,13 +198,14 @@ function fixShorthand($input)
                     $output = $solution[$i];
                     break;
                 default:
-                    echo '';
+                    $output = ucwords($output);
             } // end switch
         } // end if($input...)
     } // end for($i=0)...
     if($output != 'VIN'){
     $output = str_replace("Ssn", "SSN", $output);
 	}
+
     return $output; // return the output
 } // end function
 
@@ -220,16 +233,47 @@ function fixShorthand($input)
 
     <body>
 
+    <?php $formNice = ucwords($formNice); ?>
+
     <h1> Adding to: <?php echo $formNice ?> </h1>
 
     <?php 
 
     	$niceColumnNames = getNiceColumnNames($form);
     	$columnNames = getColumnNames($form);
+    	$colSize = getColumnSize($form);
+    	$_SESSION['form'] = $form;
+    	echo "<form method='post' action='validate.php'>";
 
-    	for($i = 0; $i < getColumnSize($form); $i++){
-    		echo "<br> <input type=" . determineInputType($columnNames[$i]) . " name=" . $columnNames[$i] . " placeholder=" . $columnNames[$i] . ">" . "  " . $niceColumnNames[$i];
+    	for($i = 0; $i < $colSize; $i++){
+    		$type = determineInputType($columnNames[$i]);
+    		echo "<br> <input type=" . $type . " name=" . $columnNames[$i] . " placeholder=" . $columnNames[$i] . ">" . "  " . $niceColumnNames[$i] . " " . placeHolderHelper($columnNames[$i]);
+    		echo '<br> variable names: ' . $columnNames[$i];
     	}
+    	$_SESSION['formtype'] = $form;
+    	$_SESSION['colSize'] = $colSize;
+    	$_SESSION['columnNames'] = $columnNames;
+    	$_SESSION['niceColumnNames'] = $niceColumnNames;
+    	echo "<br> <input type='submit'>";
+    	echo 'column names: ';
+    	echo "</form>";
+
+
+
+   //  	if($entriesReady == true){
+
+   //  		$query = "insert into (";
+
+   //  		for($i = 0; $i < getColumnSize($form); $i++){
+   //  			if($i != (getColumnSize($form) - 1)){
+   //  			$query .= $columnNames[$i] . ", ";
+   //  			} else{
+   //  				$query .= $columnNames[$i] . ") ";
+   //  			}	
+			// }
+   //  	}
+
+
 
     ?>
 
