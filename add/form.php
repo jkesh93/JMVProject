@@ -8,50 +8,24 @@ session_start();
 
 // Protect the webpage
 if (@$_SESSION['loggedIn'] != true) {
-    echo "<h1> DENIED </h1>";
+    echo "<h1>ACCESS DENIED </h1>";
 }
 
-// create global variables
-//Arrays
-$tableNameArray = array();
-$tableNiceNameArray = array();
-$tableColumnArray = array();
-
-// make statement for query
-$queryTables = "show tables";
-$sql           = $conn2->prepare($queryTables);
-
-// execute the statement
-$sql->execute();
-
-// get results from first query to input into second query
-while ($result = $sql->fetch()) {
-	$resultp = $result[0]; // preserve the result
-	//echo "<br>before fixing: " . $result[0];
-	$result[0] = fixShorthand($result[0]);
-	$result[0] = ucfirst($result[0]); // make it uppercase
-	// add to array
-	array_push($tableNameArray, $resultp);
-	array_push($tableNiceNameArray, $result[0]);
-} 
+// Variables
+$form = $_POST['formtype'];
+$formNice = fixShorthand($form);
 
 
+// Functions
 
-// functions
-function getColumnNames($tableName){
+function getColumnSize($tableName){
 	global $conn2;
-	$query = 'describe ' . $tableName;
+	$query = 'select * from  ' . $tableName;
 	$sql = $conn2->prepare($query);
 	$sql-> execute();
 
-	$returnArray = array();
-
-	while($result = $sql->fetch()){
-		$resultp = $result[0];
-		array_push($returnArray, $resultp);
-	}
-
-	return $returnArray;
+	$colCount = $sql->columnCount();
+	return $colCount;
 
 }
 
@@ -72,6 +46,66 @@ function getNiceColumnNames($tableName){
 
 	return $returnNiceArray;
 
+}
+
+function getColumnNames($tableName){
+	global $conn2;
+	$query = 'describe ' . $tableName;
+	$sql = $conn2->prepare($query);
+	$sql-> execute();
+
+	$returnArray = array();
+
+	while($result = $sql->fetch()){
+		$resultp = $result[0];
+		array_push($returnArray, $resultp);
+	}
+
+	return $returnArray;
+
+}
+
+function determineInputType($input){
+	$output = '';
+	
+	$dates = array(
+		'start_date',
+		'end_date',
+		'expires'
+		);
+
+	for($i = 0; $i < count($dates); $i++){
+		if($input == $dates[$i]){
+			$output = 'date';
+			return $output;
+		} 
+	}	
+}
+
+function placeHolderHelper($input){
+
+	$ssnCases = array(
+		'ssn',
+		'Patrons ssn',
+		)
+
+	for($i = 0; $i < count($ssnCases); $i++){
+		if($input == $ssnCases[$i]){
+			$output = ' (9 digits)';
+			return $output;
+		} 
+	}
+
+	$vinCases = array(
+		'vin',
+		)
+
+	for($i = 0; $i < count($vinCases); $i++){
+		if($input == $vinCases[$i]){
+			$output = ' (17 digits)';
+			return $output;
+		} 
+	}
 }
 
 
@@ -108,6 +142,8 @@ function fixShorthand($input)
         'repairshop',
         'REPAIRED_AT',
         'vehicleowned',
+        'driver',
+        'vehicle'
     );
     $solution  = array(
         'First Name',
@@ -118,10 +154,10 @@ function fixShorthand($input)
         'DISPLACEMENT',
         'PISTONS',
         'EXPIRES',
-        'MAKE',
-        'MODEL',
-        'COLOR',
-        'PRICE',
+        'Make',
+        'Model',
+        'Color',
+        'Price',
         'Address Number',
         'Address Street',
         'Address City',
@@ -136,7 +172,9 @@ function fixShorthand($input)
         'Company',
         'Repair Shop',
         'Repaired At',
-        'Vehicle Ownership'
+        'Vehicle Ownership',
+        'Driver',
+        'Vehicle'
     );
 
 
@@ -158,8 +196,6 @@ function fixShorthand($input)
     return $output; // return the output
 } // end function
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -175,44 +211,35 @@ function fixShorthand($input)
                 background-color: inherit;
             }
 
-            
-
             .centeredHeader{
                 text-align: center;
             }
+
         </style>    
     </head>
 
     <body>
-    <?php
 
-    	if (@$_SESSION['loggedIn'] == true) { // login confirmation
+    <h1> Adding to: <?php echo $formNice ?> </h1>
 
-    		echo '<form method=\'post\' action="form.php">';
-    		echo '<br>Which table would you like to add to? <br>';
-    		echo "<select name='formtype' id='chooseForm' onchange='myFunction(this.value)'>";
-    		for($i=0; $i < count($tableNameArray); $i++){
+    <?php 
 
-    		
-    		echo '<br> <option value=' . $tableNameArray[$i] . '>' . $tableNiceNameArray[$i];
+    	$niceColumnNames = getNiceColumnNames($form);
+    	$columnNames = getColumnNames($form);
 
-   			}
-   			echo "</select>";
-   			echo "<input type='submit'>";
-   		}
-    		
-    	
+    	for($i = 0; $i < getColumnSize($form); $i++){
+    		echo "<br> <input type=" . determineInputType($columnNames[$i]) . " name=" . $columnNames[$i] . " placeholder=" . $columnNames[$i] . ">" . "  " . $niceColumnNames[$i];
+    	}
+
     ?>
-    <p id='demo'></p>
 
-     </body>
-     <script>
-     function myFunction(answer) {
-     	var x = answer;
-     	document.getElementById("demo").innerHTML = "You selected " + x;
-     	
-     }
-     	
-     </script>
 
- </html>
+
+
+
+
+
+
+    </body>
+
+</html>
