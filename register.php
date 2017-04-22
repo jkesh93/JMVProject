@@ -47,7 +47,7 @@
 			$gender = '';
 			
 	$entriesReady = false;
-	require_once('registrationConnect.php');
+	require_once('connectscripts/registrationConnect.php');
 
 	
 	

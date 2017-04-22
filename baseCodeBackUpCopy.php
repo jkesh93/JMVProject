@@ -37,38 +37,39 @@ if (@$_SESSION['loggedIn'] != true) {
 
         <style>
 
-       * {
-            font-family:  sans-serif;
-            text-decoration: none;
-            color: inherit;
-            background-color: inherit;
+        body{
+        background-color: #333333;
         }
 
-       table{
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 70%;
-            margin: 0 auto;
-            background-color: #A1A1A1;
-            }
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 70%;
+        margin: 0 auto;
+        }
 
-            tr:nth-child(even){
-            background-color: #fff;
-            }
+        td,
+        th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
 
-            td, th{
-            border-radius: 2px;
-            text-align: left;
-            padding: 12px;
-            }
+        th{
+        color: white;
+        }
 
-            th:nth-child(even){
-            background-color: #FFf;
-            }
+        tr:nth-child(even) {
+        background-color: #CECECE;
+        }
 
-            th:nth-child(odd){
-            background-color: #fff;
-            }
+        tr:nth-child(odd) td{
+        color: #dddddd;
+        }
+
+        h2{
+        color: white;
+        }
 
         .centeredHeader {
         text-align: center;
@@ -102,9 +103,7 @@ if (@$_SESSION['loggedIn'] != true) {
                     'START_DATE',
                     'END_DATE',
                     'COMPANY',
-                    'Repairshop',
-                    'REPAIRED_AT',
-                    'Vehicleowned'
+                    'Repairshop'
                 );
                 $solution  = array(
                     'First Name',
@@ -122,9 +121,7 @@ if (@$_SESSION['loggedIn'] != true) {
                     'Start Date',
                     'End Date',
                     'Company',
-                    'Repair Shop',
-                    'Repaired At',
-                    'Vehicle Ownership'
+                    'Repair Shop'
                 );
 
                 $output    = $input; // default to this if nothing is found
@@ -145,14 +142,13 @@ if (@$_SESSION['loggedIn'] != true) {
             } // end function
 
             $title = fixShorthand($title); // call the function
-            $title = strtoupper($title);
         ?>
 
 
         <h2 class="centeredHeader">JMV DATABASE SYSTEM - <!-- title -->
             <?php
                 echo $title;
-            ?> RECORDS
+            ?> Records
         </h2>
 
         <table>
@@ -163,7 +159,6 @@ if (@$_SESSION['loggedIn'] != true) {
                             while ($result = $sql->fetch()) {
                                 $result[0] = strtoupper($result[0]);
                                 $result[0] = fixShorthand($result[0]);
-                                $result[0] = strtoupper($result[0]);
                                 echo '<th>' . $result[0] . '</th>';
                             } // end if ($_session)
                         } // end if($_SESSION['loggedin']...)
@@ -182,11 +177,11 @@ if (@$_SESSION['loggedIn'] != true) {
                     echo "\n<tr>";
                     for ($i = 0; $i < $colCount; $i++) {
                         $result2[$i] = ucwords($result2[$i]);
-                        echo "\n\t<td>" . $result2[$i] . "</td>";
+                        echo "\n\t<td><h4>" . $result2[$i] . "<h4></td>";
                     }
                     echo "\n</tr>\n";
                 }
-
+                
             ?>
         </table>
       </div>

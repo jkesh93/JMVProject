@@ -4,6 +4,8 @@
 
 	<head>
 	  <title>JMV2: Jay's database of Motor Vehicles</title>
+
+	  
 	</head>
 
 	<body>
@@ -21,7 +23,7 @@
 	
 	<?php 
 	
-	require_once('loginConnect.php'); 
+	require_once('connectscripts/loginConnect.php'); 
 	session_start();
 	if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		
@@ -44,7 +46,7 @@
 				$_SESSION['name'] = ucfirst($result['fname']);
 
 				?>
-				<meta http-equiv="refresh" content="0; url=/ProjectSeven/userLoggedIn.php" />
+				<meta http-equiv="refresh" content="0; url=/ProjectSevenV2/userLoggedIn.php" />
 				<?php
 				
 				$login = true;
