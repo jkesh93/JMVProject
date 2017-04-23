@@ -248,41 +248,15 @@ function fixShorthand($input)
     	for($i = 0; $i < $colSize; $i++){
     		$type = determineInputType($columnNames[$i]);
     		echo "<br> <input type=" . $type . " name=" . $columnNames[$i] . " placeholder=" . $columnNames[$i] . ">" . "  " . $niceColumnNames[$i] . " " . placeHolderHelper($columnNames[$i]);
-    		echo '<br> variable names: ' . $columnNames[$i];
     	}
     	$_SESSION['formtype'] = $form;
     	$_SESSION['colSize'] = $colSize;
     	$_SESSION['columnNames'] = $columnNames;
     	$_SESSION['niceColumnNames'] = $niceColumnNames;
     	echo "<br> <input type='submit'>";
-    	echo 'column names: ';
     	echo "</form>";
 
-
-
-   //  	if($entriesReady == true){
-
-   //  		$query = "insert into (";
-
-   //  		for($i = 0; $i < getColumnSize($form); $i++){
-   //  			if($i != (getColumnSize($form) - 1)){
-   //  			$query .= $columnNames[$i] . ", ";
-   //  			} else{
-   //  				$query .= $columnNames[$i] . ") ";
-   //  			}	
-			// }
-   //  	}
-
-
-
     ?>
-
-
-
-
-
-
-
 
     </body>
 

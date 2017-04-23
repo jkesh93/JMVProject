@@ -17,18 +17,8 @@ $niceColumnNames = $_SESSION['niceColumnNames'];
 $form = $_SESSION['formtype'];
 $errorMessage = ' ';
 
-// $arrayToTest = array();
-// $arrayToTest = getColumnNames();
-
-
-
-// step one: check to see if all the variables 
-//validateForm();
 
 validateForm();
-
-
-
 
 // functions
 
@@ -47,8 +37,6 @@ validateForm();
 				$columnValues[$i] = $_POST[$columnNames[$i]];
 			}
 		}
-
-		
 		if($entriesReady == true){
 			echo "<h3 class='alert'> Confirm </h3>";
 			$confirmNiceNames = getNiceColumnNamesArray();
@@ -66,8 +54,6 @@ validateForm();
 			echo " <br>";
 			echo " <input type='submit'>";
 			echo "</form>";
-
-
 		}
 		else{
 			echo "<h3 class='alert'>Error: Could not submit due to the following errors: </h3> ";
@@ -75,9 +61,6 @@ validateForm();
 			echo "<br> click <a href='form.php?formtype=" . $form . "'> here </a> to go back </a>";
 		}
 	}
-
-
-
 	function alertUser($message){
 		global $errorMessage;
 		$errorMessage .= "<p class='alert'>" . $message . " is incomplete </p>";
@@ -143,7 +126,6 @@ validateForm();
 		$valList = '';
 
 		$query = ''; // returns this query;
-
 		for ($i = 0; $i < $colNameCount; $i++){
 			if(($i + 1) == $colNameCount){
 				$keyList .= $fieldsList[$i] . "";
@@ -151,7 +133,6 @@ validateForm();
 				$keyList .= $fieldsList[$i] . ", ";
 			}
 		}
-
 		for ($i = 0; $i < $colValCount; $i++){
 			if(($i + 1) == $colValCount){
 				$valList .= "'" . $valuesList[$i] . "'";
@@ -159,14 +140,7 @@ validateForm();
 				$valList .= "'" . $valuesList[$i] . "', ";
 			}
 		}
-
 		$query = "insert into " . $tableName . " (" . $keyList . ") values (" . $valList . ")";
-
-
 		return $query;
-
 	}
-
-
-
 ?>

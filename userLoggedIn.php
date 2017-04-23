@@ -28,7 +28,7 @@ if (@$_SESSION['loggedIn'] != true) {
             <button><a href=/ProjectSevenV2/view/viewTables.php class='nodeco'>View</a> </button> View all listings<br>
             <button><a href=/ProjectSevenV2/update/editTables.php class='nodeco'>Edit</a> </button> Edit a new listing<br>
             <button><a href=/ProjectSevenV2/add/addTables.php class='nodeco'>Add</a> </button> Add a listing<br>
-            <button><a href=/ProjectSevenV2/deleteTables.php class='nodeco'>Delete</a> </button> Delete a listing<br>
+            <button><a href=/ProjectSevenV2/delete/deleteTables.php class='nodeco'>Delete</a> </button> Delete a listing<br>
         </ul>
         ";
 ?>
