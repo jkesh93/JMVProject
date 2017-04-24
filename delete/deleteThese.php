@@ -14,6 +14,8 @@ if (@$_SESSION['loggedIn'] != true) {
 // variables
 $rowsToDelArray = array();
 $colCount = $_POST['colCount'];
+$queries = array();
+echo "<br>";
 
 
 // values you can work with;
@@ -67,28 +69,37 @@ function returnQueriesToDelete(){
 	// get the number of rows to delete
 	global $rowsToDelArray;
 	global $colCount;
+	global $queries;
 	$query = '';
 	$countDeletions = getSizeDel();
 	//echo '<br> count del = ' . $countDeletions;
 
 	for($i=0; $i<$countDeletions; $i++){
-		$query = 'delete from ' . getForm() . " where ";
+		$query = "DELETE FROM " . getForm() . " WHERE ";
 		$j = $rowsToDelArray[$i];
 
 		//$query .= "<br>";
 		
 		for($k=0; $k< $colCount; $k++){
-		$query .= getColumnName($k) . "=";
-			if(($k+1) == $colCount){
-			$query .= "'" . buildMinorQuery($j, $k) . "';";
-			} else{
-			$query .= "'" . buildMinorQuery($j, $k) . "' AND ";
+		$minorQuery = buildMinorQuery($j,$k);
+		if($minorQuery == ''){
+
+		} else{
+			$query .= getColumnName($k) . "=";
+				if(($k+1) == $colCount){
+				$query .= "'" . buildMinorQuery($j, $k) . "';";
+				} else{
+				$query .= "'" . buildMinorQuery($j, $k) . "' AND ";
+				}
 			}
 		}
+
 		echo "<br>";
-		echo $query;
+	    echo $query;
+		array_push($queries, $query);
+		
 	}
-	
+
 }
 
 function pushToArray(){
@@ -121,10 +132,37 @@ function getSizeDel(){
 	return count($rowsToDelArray);
 }
 
-
-
-
-
-
-
 ?>
+
+<!DOCTYPE html>
+	<head>
+		
+
+
+	</head>
+
+
+	<body>
+		<h1> Are you sure? </h1>
+		<h5> Once you click 'Delete', all changes are final.</h5>
+
+		<form action="deleteconfirm.php" method="post">
+		<?php
+		echo var_dump($queries);
+
+			for($i=0; $i<count($queries); $i++){
+
+				$_SESSION['query' . $i] = $queries[$i];
+			}
+
+			echo "<input type='hidden' name='queryCount' value='" . count($queries) . "' >";
+
+			echo "<input type='submit' value='Delete'>";
+
+		?>
+
+
+	</body>
+
+
+</html>
