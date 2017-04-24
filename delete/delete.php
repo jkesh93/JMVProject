@@ -197,15 +197,21 @@ $colCount = $sql2->columnCount();
                   <tr>
 
                     <?php // Default database display behavior
+                    $colTable = array();
                         if (@$_SESSION['loggedIn'] == true) {
+                        	$k = 0;
                             while ($result = $sql->fetch()) {
+                            	$resultp = $result[0];
                                 $result[0] = strtoupper($result[0]);
                                 $result[0] = fixShorthand($result[0]);
                                 $result[0] = strtoupper($result[0]);
                                 echo '<th>' . $result[0] . '</th>';
+                                $colTable[$k] = $resultp;
+                                $k++;
                             } // end if ($_session)
                             echo '<th> Delete </th>';
                         } // end if($_SESSION['loggedin']...)
+                        $_SESSION['columnHeaders'] = $colTable;
 
                         // display a message if there is no data
                         if ($sql->rowCount() == 0) {
@@ -217,42 +223,39 @@ $colCount = $sql2->columnCount();
 
             <?php
             $iterator = 0;
-            $j = 0;
-            	echo "<form method='post' action='deleteThese.php' onsubmit='return checkBoxChecked()'>";
+            	echo "<form method='post' action='deleteThese.php'>";
             	$resultsTable = array();
-
+            	$j = 0;
                 while ($result2 = $sql2->fetch()) { // Building data cells for the table
                 	//global $iterator;
                 	
                     echo "\n<tr>";
                     for ($i = 0; $i < $colCount; $i++) {
                     	global $resultsTable;
-                    	$resultsTable[$j] = $result2[$i];
-                    	if($result2[$i] == ''){
-                    		$resultsTable[$j] = 'NULL';
-                    	} 
-                    	echo "<br> This went into the table:" . $resultsTable[$j];
-                    	echo "<br> j is at:" . $j;
+                    	if(is_null($result2[$i])){
+                    		$result2[$i] = NULL;
+                    	}
+                    	$resultsTable[$iterator][$i] = $result2[$i];
+                    	echo "<input type='hidden' name='results" . $iterator . $i . "' value='" . $result2[$i] ."'>";
+                    	//echo $iterator . $i;
                         $result2[$i] = ucwords($result2[$i]);
                         echo "\n\t<td>" . $result2[$i] . "</td>";
-                        $j++;
-                    }
 
-                    // create an array
-                    // put the values into the array
-                    // put the array into the 'value' of the input;
-                    
-                    echo "<td><input type='checkbox' class='checkbox' name='" . $iterator . "' value='" . $iterator . " '></td>";
+                    }
+                    echo "<td><input type='checkbox' name='" . $iterator . "' value='" . $iterator . " '></td>";
                     echo "\n</tr>\n";
                     $iterator = $iterator + 1;
                 }
+                // send the row count;
+                echo "<input type='hidden' name= 'rowCount' value=' " . $iterator . " ' >";
+                echo "<input type='hidden' name= 'colCount' value='" . $i . "' >";
+                echo "<input type='hidden' name= 'formName' value='" . $title . "' >";
 
 
-                for($i = 0; $i<$j;$i++){
-                	echo "<input type='hidden' name='result" . $i . " ' value=' " . $resultsTable[$i] . " '>";
-                	echo "<br>" . $i;
-                	echo "<br>Loop:" . $resultsTable[$i];
-                }
+                // 
+
+
+                
 
                 $_SESSION['size'] = $iterator;
                 echo "<input type='submit'>";
