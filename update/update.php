@@ -192,7 +192,7 @@ $colCount = $sql2->columnCount();
                 echo $title;
             ?> RECORDS
         </h2>
-        <h3 style="text-align: center;"> Please choose the record(s)to delete </h3>
+        <h3 style="text-align: center;"> Please choose a record to update </h3>
 
         <table>
                   <tr>
@@ -210,7 +210,7 @@ $colCount = $sql2->columnCount();
                                 $colTable[$k] = $resultp;
                                 $k++;
                             } // end if ($_session)
-                            echo '<th> Delete </th>';
+                            echo '<th> Edit </th>';
                         } // end if($_SESSION['loggedin']...)
                         $_SESSION['columnHeaders'] = $colTable;
 
@@ -224,7 +224,7 @@ $colCount = $sql2->columnCount();
 
             <?php
             $iterator = 0;
-            	echo "<form method='post' action='deleteThese.php'>";
+            	echo "<form method='post' action='updateThis.php'>";
             	$resultsTable = array();
             	$j = 0;
                 while ($result2 = $sql2->fetch()) { // Building data cells for the table
@@ -243,7 +243,7 @@ $colCount = $sql2->columnCount();
                         echo "\n\t<td>" . $result2[$i] . "</td>";
 
                     }
-                    echo "<td><input type='checkbox' name='" . $iterator . "' value='" . $iterator . " '></td>";
+                    echo "<td><input type='radio' name='edit' value='" . $iterator . " '></td>";
                     echo "\n</tr>\n";
                     $iterator = $iterator + 1;
                 }
