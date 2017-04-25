@@ -5,12 +5,9 @@ require_once('../connectscripts/dbConnect.php');
 require_once('../connectscripts/loginConnect.php');
 session_start();
 // Protect the webpage
-
-
 if (@$_SESSION['loggedIn'] != true) {
     echo "<h1>ACCESS DENIED </h1>";
 } //@$_SESSION[ 'loggedIn' ] != true
-
 // variables
 $rowToEdit   = $_POST['rowToEdit'];
 $form        = $_POST['form'];
@@ -18,38 +15,19 @@ $colSize     = $_POST['colSize'];
 $columnNames = array();
 $columnNames = getColumnNames($form);
 echo "<br>";
-
 $finalQuery = buildFinalQuery();
-//$finalQuery = addslashes($finalQuery);
-//echo $finalQuery;
-//echo var_dump($finalQuery);
-
-// $queryPartOne = buildUpdateQuery();
-// $queryPartwo = buildAfterWhereQuery();
-// $queryPartOne .= $queryPartwo;
-//echo $queryPartOne;
-//$query = buildFinalQuery();
-
+var_dump($finalQuery);
 $sql = $conn2->prepare($finalQuery);
 //var_dump($sql);
 $conn2->exec($finalQuery);
-
-
 // functions
-
 function buildFinalQuery(){
 $queryPartOne = buildUpdateQuery();
 $queryPartTwo = buildAfterWhereQuery();
 $queryPartOne .= $queryPartTwo;
-
 //echo $queryPartOne;
-
 return $queryPartOne;
-
-
 }
-
-
 function getColumnNames($tableName)
 {
     global $conn2;
@@ -63,11 +41,11 @@ function getColumnNames($tableName)
     } //$result = $sql->fetch()
     return $returnArray;
 }
-
 function buildAfterWhereQuery() // returns a query which fits after the "where" clause in the update function
 {
     $query = "";
     global $colSize;
+    $colSize;
     global $rowToEdit;
     global $columnNames;
     $query = " WHERE";
@@ -76,28 +54,45 @@ function buildAfterWhereQuery() // returns a query which fits after the "where" 
         $address = $rowToEdit;
         $address .= $i;
         $address = str_replace(' ', '', $address);
-        
-        
-        if ($_POST["results" . $address] == '') // if results on are blank skip
+
+         if ($_POST['userResult' . $address] == '' || is_null($_POST['results' . $address])) // if results on are blank skip
             {
-        } //$_POST[ 'results' . $address ] == ''
+        } //$_POST['userResult' . $address] == '' || is_null($_POST['results' . $address])
+        
         else {
-            if (($i + 1) == $colSize) // if we're on the last string
-                {
+            if (($i + 1) == $colSize) {
+
+
+
+                if($_POST['results' . $address] == ''){
+                } else{ // last item on the list
                 $query .= " " . $columnNames[$i] . "='" . $_POST['results' . $address] . "'";
-            } //( $i + 1 ) == $colSize
-            else {
-                $query .= " " . $columnNames[$i] . "='" . $_POST['results' . $address] . "' AND";
+                }
+
+
+            } else {
+
+                if(($i - 0) >= 1){
+                    $query .= " AND";
+                }
+
+                if($_POST['results' . $address] == ''){ // empty items
+                    //$query .= " " . $columnNames[$i] . "='" . $_POST['results' . $address] . "'d";
+                } else{ // regular rows
+                    $query .= " " . $columnNames[$i] . "='" . $_POST['results' . $address] . "'";
+
+                }
+
+
             }
         }
-        
-    } //$i = 0; $i < $colSize; $i++
+    }
     $query .= ";";
-    //echo $query;
-    return $query;
-    // iterate through the values and get their values;
-}
 
+    return $query;
+        
+        
+}
 function buildUpdateQuery()
 {
     global $colSize;
@@ -107,7 +102,6 @@ function buildUpdateQuery()
     //echo "<br>";
     
     $query = 'UPDATE ' . $form . ' SET';
-    
     for ($i = 0; $i < $colSize; $i++) // iterate through each column
         {
         $address = $rowToEdit;
@@ -140,7 +134,6 @@ function buildUpdateQuery()
     //echo $query;
     return $query;
 }
-
 ?>
 
   <!DOCTYPE html>

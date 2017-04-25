@@ -13,6 +13,8 @@ if (@$_SESSION['loggedIn'] != true) {
 
 // Variables
 $title         = $_GET['formtype'];
+$tableName = $title;
+var_dump($tableName);
 $title         = ucwords($title);
 
 // make statement for query
@@ -250,7 +252,7 @@ $colCount = $sql2->columnCount();
                 // send the row count;
                 echo "<input type='hidden' name= 'rowCount' value=' " . $iterator . " ' >";
                 echo "<input type='hidden' name= 'colCount' value='" . $i . "' >";
-                echo "<input type='hidden' name= 'formName' value='" . $title . "' >";
+                echo "<input type='hidden' name= 'formName' value='" . $tableName . "' >";
 
 
                 // 

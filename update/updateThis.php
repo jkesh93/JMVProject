@@ -5,13 +5,10 @@
   require_once( '../connectscripts/loginConnect.php' );
   session_start();
   // Protect the webpage
-
-
   if ( @$_SESSION[ 'loggedIn' ] != true )
   {
       echo "<h1>ACCESS DENIED </h1>";
   } //@$_SESSION[ 'loggedIn' ] != true
-
   // Variables
   $form     = $_POST[ 'formName' ];
   $formNice = fixShorthand( $form );
@@ -20,7 +17,6 @@
   $niceColumnNames = getNiceColumnNames( $form );
   $columnNames     = getColumnNames( $form );
   $colSize         = getColumnSize( $form );
-
   // Functions
   function getColumnSize( $tableName )
   {
@@ -31,7 +27,6 @@
       $colCount = $sql->columnCount();
       return $colCount;
   }
-
   function getNiceColumnNames( $tableName )
   {
       global $conn2;
@@ -48,7 +43,6 @@
       } //$result = $sql->fetch()
       return $returnNiceArray;
   }
-
   function getColumnNames( $tableName )
   {
       global $conn2;
@@ -63,10 +57,9 @@
       } //$result = $sql->fetch()
       return $returnArray;
   }
-
   function determineInputType( $input )
   {
-      $output = '';
+      $output = 'text';
       $dates  = array(
            'start_date',
           'end_date',
@@ -82,11 +75,9 @@
           else
           {
               $output = 'text';
-              return $output;
           }
       } //$i = 0; $i < count( $dates ); $i++
   }
-
   function placeHolderHelper( $input )
   {
       $output   = '';
@@ -115,7 +106,6 @@
           } //$input == $vinCases[ $i ]
       } //$i = 0; $i < count( $vinCases ); $i++
   }
-
   function fixShorthand( $input )
   {
       $shorthand = array(
@@ -205,9 +195,7 @@
       } //$output != 'VIN'
       return $output; // return the output
   } // end function
-
   
-
 ?>
 
 <!DOCTYPE html>
@@ -215,18 +203,15 @@
     
     <head>
         <style>
-
             * {
                 font-family:  sans-serif;
                 text-decoration: none;
                 color: inherit;
                 background-color: inherit;
             }
-
             .centeredHeader{
                 text-align: center;
             }
-
         </style>    
     </head>
 
@@ -242,7 +227,6 @@
 
         <?php
           echo "<form method='post' action='updatesuccess.php'>";
-
             for ( $i = 0; $i < $colSize; $i++ )
             {
                 $address = $rowToEdit;
@@ -253,11 +237,9 @@
                 echo "<br> <input type='" . $type . "' name='userResult" . $address . "' placeholder='".$_POST[ 'results'.$address ]. "' value='" . $_POST[ 'results' . $address ] . "'>" . "  " . $niceColumnNames[ $i ] . " " . placeHolderHelper( $columnNames[ $i ] );
                 echo "<input type='hidden' name='results" . $address . "' value='" . $_POST[ 'results' . $address ] . "' >";
             } //$i = 0; $i < $colSize; $i++
-
             echo "<input type='hidden' name='rowToEdit' value='" . $rowToEdit . "' >";
             echo "<input type='hidden' name='colSize' value='" . $colSize ."' >";
             echo "<input type='hidden' name='form' value='" . $form ."'>";
-
             echo "<br> <input type='submit'>";
             echo "</form>";
         ?>
