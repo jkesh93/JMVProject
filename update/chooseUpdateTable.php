@@ -116,6 +116,10 @@ function fixShorthand($input)
     return $output; // return the output
 } // end function
 
+function buildWhereQueryPortion(){
+    
+}
+
 ?>
 
 <!DOCTYPE html>
