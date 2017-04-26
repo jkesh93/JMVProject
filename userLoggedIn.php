@@ -29,6 +29,7 @@ if (@$_SESSION['loggedIn'] != true) {
             <button><a href=/ProjectSevenV2/update/chooseUpdateTable.php class='nodeco'>Edit</a> </button> Edit a new listing<br>
             <button><a href=/ProjectSevenV2/add/addTables.php class='nodeco'>Add</a> </button> Add a listing<br>
             <button><a href=/ProjectSevenV2/delete/deleteTables.php class='nodeco'>Delete</a> </button> Delete a listing<br>
+            <button><a href=/ProjectSevenV2/search/search.html class='nodeco'>Delete</a> </button> Delete a listing<br>
         </ul>
         ";
 ?>
