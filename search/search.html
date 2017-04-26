@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<style>
+
+	            * {
+	                font-family:  sans-serif;
+	                text-decoration: none;
+	                color: inherit;
+	                background-color: inherit;
+	            }
+
+	            
+
+	            .centeredHeader{
+	                text-align: center;
+	            }
+		</style>
+
+	</head>
+
+	<body>
+		<h2> Search for a listing </h2>
+
+		<h5> Select a table to search in </h5>
+			<form action="searchForm.php" method="post">
+				<select name="userSearchedFor">
+					<option value="driver">Driver</option>
+					<option value="employment">Employment</option>
+					<option value="engine">Engine</option>
+                    <option value="insurance">Insurance</option>
+                    <option value="license">License</option>
+                    <option value="mechanics">Mechanics</option>
+                    <option value="repairshop">Repair Shop</option>
+                    <option value="residence">Residence</option>
+                    <option value="vehicle">Vehicle</option>
+                    <option value="vehicleowned">Vechile Owned</option>
+				</select>
+                <input type="submit">
+			</form>
+
+	</body>
+
+</html>
